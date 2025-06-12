@@ -84,7 +84,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// --- EL RESTO DE auth.js (registro, restablecimiento, etc.) NO NECESITA CAMBIOS MAYORES ---
+
 
 // Mostrar formulario para solicitar restablecimiento de contraseña
 router.get('/olvide-contrasena', (req, res) => {
@@ -350,5 +350,7 @@ router.get('/logout', (req, res) => {
     // aquí harías la lógica para invalidar el token en el lado del servidor.
     res.redirect('/login');
 });
+
+
 
 module.exports = router;

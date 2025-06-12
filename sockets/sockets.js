@@ -7,7 +7,7 @@ function configurarSockets(io) {
     socket.on('join', ({ userId }) => {
       if (userId) {
         socket.join(`user-${userId}`);
-        socket.join(room);
+        
         usuariosConectados.set(userId, socket.id);
         console.log(`✅ Usuario ${userId} se unió al canal user-${userId}`);
       }

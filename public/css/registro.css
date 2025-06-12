@@ -107,4 +107,21 @@
     text-decoration: underline;
   }
   
-  
+      /* Estilos para los mensajes de error de validación JS */
+      .error-message {
+        color: red;
+        font-size: 0.85em;
+        margin-top: -10px; /* Ajusta este valor si necesitas que suba o baje el mensaje */
+        margin-bottom: 5px; /* Espacio debajo del mensaje */
+        text-align: left;
+        display: none; /* Oculto por defecto */
+      }
+      .input-error {
+        border-color: red !important; /* Resaltar el input con error */
+      }
+      /* Estilos para el mensaje general del servidor */
+      #mensaje {
+        margin-top: 20px !important; /* Espacio debajo del botón */
+        font-weight: bold;
+        text-align: center;
+      }

@@ -116,4 +116,21 @@
     text-decoration: underline;
   }
 
+  .error-message {
+    color: red;
+    font-size: 0.85em;
+    margin-top: -10px;
+    margin-bottom: 5px;
+    text-align: left;
+    display: none;
+  }
+  .input-error {
+    border-color: red !important;
+  }
+  #mensaje {
+    margin-top: 20px !important;
+    font-weight: bold;
+    text-align: center;
+  }
+
   

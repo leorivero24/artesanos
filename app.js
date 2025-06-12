@@ -7,12 +7,17 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 app.set('io', io);
-
+// ✅ Configurar sockets en tiempo real
+const { configurarSockets } = require('./sockets/sockets');
+configurarSockets(io);
 const publicacionesRoutes = require('./routes/publicaciones');
 
 // Este orden es importante
 app.use(publicacionesRoutes); 
 app.use('/api', publicacionesRoutes);
+
+const amigosRoutes = require('./routes/amigos');
+app.use(amigosRoutes);
 
 
 app.use(express.static('public'));

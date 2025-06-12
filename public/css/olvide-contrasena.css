@@ -83,3 +83,24 @@ margin-bottom: 20px;
   margin-top: 15px;
   font-weight: bold;
 }
+
+
+     /* Estilos para los mensajes de validación locales (vacío y formato inválido) */
+     .error-message {
+      color: red;
+      font-size: 0.85em;
+      margin-top: -5px; /* Un poco más pegado al input */
+      margin-bottom: 20px;
+      text-align: left; /* Alineado a la izquierda, como los errores de input */
+      display: none; /* Oculto por defecto */
+      margin-left: 3px;
+    }
+    .input-error {
+      border-color: red !important;
+    }
+    /* Estilos para el mensaje principal (del servidor) */
+    #mensaje {
+      margin-top: 40px !important;
+      font-weight: bold;
+      text-align: center; /* Centrado, como los mensajes de éxito/error del servidor */
+    }
