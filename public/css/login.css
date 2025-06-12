@@ -1,0 +1,119 @@
+/* Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    /* Fondo beige/marrón claro tipo artesanal */
+    background: linear-gradient(135deg, #d9cbb6, #b79969);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-container {
+    background: #f9f5f0; /* beige muy claro */
+    width: 380px; /* ANCHO AUMENTADO, similar al de registro.css */
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(88, 67, 43, 0.3);
+    text-align: center;
+    border: 2px solid #b79969; /* borde marrón */
+  }
+  
+  .login-container h1 {
+    font-family: 'Pacifico', cursive;
+    color: #8b5e3c; /* marrón cálido */
+    margin-bottom: 25px;
+    font-size: 2.8rem;
+    letter-spacing: 3px;
+    text-shadow: 1px 1px 0 #d9cbb6;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Ajustado para dar espacio a los mensajes de error */
+    text-align: left; /* Alinea los inputs y mensajes de error a la izquierda */
+  }
+  
+  input[type="email"],
+  input[type="password"] {
+    padding: 14px 16px;
+    font-size: 1.05rem;
+    border: 1.5px solid #c7b59c;
+    border-radius: 8px;
+    background: #fff8f0;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    color: #5b4636;
+  }
+  
+  input[type="email"]::placeholder,
+  input[type="password"]::placeholder {
+    color: #a3896b;
+    font-style: italic;
+  }
+  
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: #8b5e3c;
+    box-shadow: 0 0 8px #8b5e3caa;
+    background: #fffdf7;
+  }
+  
+  button {
+    background: #8b5e3c;
+    color: white;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 15px; /* Espacio para el botón */
+  }
+  
+  button:hover {
+    background: #7a4f2e;
+    transform: translateY(-2px);
+  }
+
+
+  .forgot-password-link {
+    margin-top: 20px;
+    text-decoration: none; /* Elimina el subrayado */
+    color: #8B4513;       /* Color marrón */
+    text-align: center;   /* Si quieres que este enlace esté centrado, asegúrate de que el contenedor o este mismo tenga esta propiedad */
+    display: block;       /* Podría ser necesario si quieres que text-align: center funcione bien en el enlace mismo */
+}
+
+/* Opcional: Estilo al pasar el ratón por encima (hover) */
+.forgot-password-link:hover {
+    color: #A0522D; /* Un tono diferente de marrón al pasar el ratón */
+    text-decoration: underline; /* Puedes volver a subrayar al pasar el ratón si quieres */
+}
+ 
+  
+  .footer-text {
+    margin-top: 25px;
+    color: #6a5c48;
+    font-size: 0.9em;
+  }
+  
+  .footer-text a {
+    color: #8b5e3c;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .footer-text a:hover {
+    text-decoration: underline;
+  }
+
+  

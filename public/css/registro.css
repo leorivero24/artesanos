@@ -1,0 +1,110 @@
+/* Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #d9cbb6, #b79969);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .register-container {
+    background: #f9f5f0;
+    width: 380px; /* ANCHO AUMENTADO para mejor visualización de errores */
+    padding: 35px 30px; /* Padding ligeramente ajustado */
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(88, 67, 43, 0.3);
+    text-align: center;
+    border: 2px solid #b79969;
+  }
+  
+  .register-container h1 {
+    font-family: 'Pacifico', cursive;
+    color: #8b5e3c;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+    text-shadow: 1px 1px 0 #d9cbb6;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* menos espacio entre inputs */
+    text-align: left;
+  }
+  
+  label {
+    color: #6a5c48;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 0.95rem;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 12px 14px; /* menos padding */
+    font-size: 1rem;
+    border: 1.5px solid #c7b59c;
+    border-radius: 8px;
+    background: #fff8f0;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    color: #5b4636;
+  }
+  
+  input::placeholder {
+    color: #a3896b;
+    font-style: italic;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #8b5e3c;
+    box-shadow: 0 0 8px #8b5e3caa;
+    background: #fffdf7;
+  }
+  
+  button {
+    background: #8b5e3c; /* marrón oscuro del logo */
+    color: white;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 15px; /* un poco más de espacio */
+  }
+  
+  button:hover {
+    background: #7a4f2e; /* un poco más oscuro al pasar el ratón */
+    transform: translateY(-2px);
+  }
+  
+  .footer-text {
+    margin-top: 25px; /* más espacio para que no se pegue al botón */
+    color: #6a5c48;
+    font-size: 0.9em;
+    text-align: center;
+  }
+  
+  .footer-text a {
+    color: #8b5e3c;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .footer-text a:hover {
+    text-decoration: underline;
+  }
+  
+  

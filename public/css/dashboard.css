@@ -1,0 +1,259 @@
+/* public/css/dashboard.css */
+
+/* Fuentes de Google (Asegúrate de que 'Pacifico' esté importada en tu HTML si la usas) */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+/* Aplica la fuente global que tenías en body */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5; /* Un gris suave para el fondo */
+    margin: 0; /* Asegurar que no haya margen por defecto */
+    padding-top: 56px; /* Ajuste para la altura de la navbar fija */
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* --- Estilos de la Barra de Navegación --- */
+.navbar {
+    /* Mantenemos tu degradado de color y el margen inferior */
+    background: linear-gradient(135deg, #d9cbb6, #b79969);
+    margin-bottom: 20px; /* Esto empuja el contenido debajo de la barra */
+    box-shadow: 0 2px 4px rgba(0,0,0,.1); /* Sombra suave para darle elevación */
+    position: fixed; /* Hacer la navbar fija en la parte superior */
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1030; /* Asegurar que esté por encima de otros elementos */
+}
+
+/* Estilo para el branding "Artesanos.com" en la barra de navegación */
+.navbar-brand {
+    font-family: 'Pacifico', cursive;
+    color: #8b5e3c; /* Tu color marrón */
+    font-size: 1.75rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    padding-left: 15px; /* Pequeño padding a la izquierda del brand */
+}
+
+.navbar-brand:hover,
+.navbar-brand:focus {
+    color: #7a4f2e; /* Tu color marrón más oscuro al pasar el mouse o enfocar */
+}
+
+/* Color del texto de los enlaces de navegación */
+.navbar .nav-link {
+    color: #343a40 !important; /* Tu gris oscuro para buen contraste */
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    padding: 0.5rem 0.75rem;
+}
+
+/* Regla general para los nav-link al pasar el mouse/focar */
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+    background-color: #e9ecef; /* Tu gris claro para el fondo */
+    border-radius: 5px;
+    color: #212529 !important;
+}
+
+/* Estilo para los iconos dentro de los enlaces de navegación */
+.nav-link i {
+    vertical-align: middle; /* Alinea el icono con el texto */
+    margin-right: 5px;
+}
+
+/* --- Estilos específicos para el campo de búsqueda en la navbar --- */
+.navbar .form-control {
+    border-radius: 20px; /* Bordes más redondeados para el input de búsqueda */
+    border-color: #ced4da; /* Color de borde por defecto de Bootstrap */
+    max-width: 250px; /* Limita el ancho del campo de búsqueda */
+}
+
+.navbar .btn-outline-secondary {
+    border-radius: 20px;
+    border-color: #6c757d; /* Color de borde de Bootstrap secondary */
+    color: #6c757d; /* Color de texto de Bootstrap secondary */
+}
+
+.navbar .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+/* --- Estilos para Avatares --- */
+
+/* Contenedor del avatar y el nombre para flexbox (tu estilo existente) */
+.navbar-nav .nav-item.d-flex.align-items-center {
+    margin-right: 1rem;
+}
+
+/* Estilo para el avatar principal del usuario logueado en la navbar (tu estilo existente) */
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 70%; /* Tu borde más suave */
+    object-fit: cover;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition: transform 0.2s ease;
+    /* Mantenemos tu borde y el hover */
+    border: 3px solid #8b5e3c; /* Un borde que combine con tu branding */
+}
+
+.avatar:hover {
+    transform: scale(1.05);
+}
+
+/* NUEVO: Estilos para avatares pequeños en los resultados de búsqueda */
+.avatar-sm {
+    width: 30px;  /* Tamaño más pequeño */
+    height: 30px;
+    border-radius: 50%; /* Hacerlo redondo */
+    object-fit: cover; /* Asegurar que la imagen cubra el área sin distorsionarse */
+    border: 1px solid #b79969; /* Un borde sutil que combine con tu esquema de color */
+    flex-shrink: 0; /* Evita que el avatar se encoja */
+}
+
+
+/* Estilo para el enlace del nombre de usuario que es el dropdown toggle (tu estilo existente) */
+.navbar .nav-link.dropdown-toggle#userNameDropdown {
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    padding: 0.5rem 0.5rem;
+}
+
+/* Efecto de hover/focus solo en el texto del nombre de usuario (tu estilo existente) */
+.navbar .nav-link.dropdown-toggle#userNameDropdown:hover #userName,
+.navbar .nav-link.dropdown-toggle#userNameDropdown:focus #userName {
+    background-color: #e9ecef; /* Tu gris claro para el fondo */
+    border-radius: 5px;
+    padding: 2px 6px;
+    margin-left: -6px;
+    transition: background-color 0.2s ease;
+}
+
+/* Ajustes para el texto del nombre de usuario dentro del dropdown-toggle (tu estilo existente) */
+#userName {
+    line-height: 1;
+    color: #343a40; /* Asegura el color del texto */
+    font-weight: 500;
+}
+
+
+/* --- Contenido Principal del Dashboard --- */
+/* Ajustamos el margin-top para compensar el fixed navbar + su margin-bottom */
+.container.mt-4 {
+  max-width: 40%;
+  background: linear-gradient(135deg, #d9cbb6, #b79969);
+    padding: 30px;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0,0,0,.05); /* Sombra ligera */
+    margin-top: calc(56px + 20px + 20px) !important; /* Altura navbar + margin-bottom + un poco de espacio extra */
+    /* El 20px de arriba es de tu margin-bottom de la navbar, el otro 20px es espacio extra */
+    margin-right: auto !important; /* Empuja el contenedor hacia la derecha */
+    margin-left: 20.5% !important;
+}
+
+
+/* Estilo para la lista de resultados de búsqueda (adoptamos tus colores si los tienes) */
+#searchResults.list-group {
+    margin-top: 20px;
+    border: 1px solid #d9cbb6; /* Un borde que combine con tu esquema de color */
+    border-radius: 8px;
+    overflow: hidden;
+    
+}
+
+#searchResults .list-group-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef; /* Separador sutil */
+    background-color: #fcfcfc; /* Un fondo muy ligero para los ítems */
+}
+
+#searchResults .list-group-item:last-child {
+    border-bottom: none;
+}
+
+#searchResults .list-group-item span {
+    font-weight: 500;
+    color: #495057; /* Un gris oscuro para el texto */
+}
+
+#searchResults .list-group-item .btn-sm {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    /* Puedes personalizar los colores de los botones aquí si quieres */
+    background-color: #b79969; /* Un botón que combine con tu esquema de color */
+    border-color: #b79969;
+    color: #fff;
+}
+#searchResults .list-group-item .btn-sm:hover {
+    background-color: #a0825e;
+    border-color: #a0825e;
+}
+
+
+/* Mensajes de alerta dentro de los resultados de búsqueda */
+#searchResults .alert {
+    margin: 0;
+    border-radius: 0;
+    padding: 15px;
+    text-align: center;
+}
+
+/* --- Estilos de Sidebar (tu estilo existente) --- */
+.sidebar {
+    height: calc(100vh - 80px); /* Ajustado para tu padding-top en body */
+    position: sticky;
+    top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    background-color: #ffffff; /* Fondo blanco para el sidebar */
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    padding: 10px 15px;
+    transition: background-color 0.2s ease;
+    color: #343a40; /* Color de texto para los enlaces del sidebar */
+}
+
+.sidebar .nav-link:hover {
+    background-color: #efede9;
+    border-radius: 5px;
+}
+
+
+.card-img-top {
+    width: 50%;
+    height: auto;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  
+
+/* --- Responsive adjustments --- */
+@media (max-width: 991.98px) {
+    .navbar-nav .nav-item.d-flex.align-items-center.ms-lg-3 {
+        margin-left: 0 !important;
+        margin-top: 10px;
+    }
+    .navbar .form-control {
+        max-width: 100%;
+    }
+    .container.mt-4 {
+        margin-top: calc(56px + 20px + 10px) !important; /* Ajuste para pantallas pequeñas */
+    }
+    .sidebar {
+        position: static; /* En pantallas pequeñas, el sidebar ya no es sticky */
+        height: auto;
+        margin-top: 20px; /* Espacio si el sidebar va debajo del contenido principal */
+    }
+}

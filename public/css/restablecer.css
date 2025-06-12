@@ -1,0 +1,131 @@
+/* Estilos generales del body (fondo, alineación) */
+body {
+  font-family: sans-serif; /* Usamos una fuente sans-serif genérica como fallback */
+  background: linear-gradient(135deg, #d9cbb6, #b79969);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px; /* Añadimos padding para responsividad */
+  box-sizing: border-box; /* Asegura que padding y borde se incluyan en el width/height */
+}
+
+/* Estilos generales del contenedor para Restablecer Contraseña (y Olvidar Contraseña si se usa el mismo CSS) */
+.reset-password-container {
+  background: #f9f5f0; /* beige muy claro */
+  width: 380px; /* ANCHO AUMENTADO, similar al de registro.css */
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(88, 67, 43, 0.3);
+  text-align: center;
+  border: 2px solid #b79969; /* borde marrón */
+}
+
+/* Estilos para los títulos h1 dentro del contenedor */
+.reset-password-container h1 {
+  margin-bottom: 20px;
+  color: #8b5e3c; /* marrón cálido */
+  font-family: 'Pacifico', cursive; /* Mantener la fuente Pacifico para el título */
+  font-size: 2.2em; /* Ajustar el tamaño si es necesario */
+}
+
+/* Estilos para los párrafos p dentro del contenedor */
+.reset-password-container p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* Estilos para los inputs de tipo password (aplicable al formulario de restablecer) */
+.reset-password-container input[type="password"] {
+  width: calc(100% - 22px); /* Usamos el cálculo que tenías */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1.5px solid #c7b59c;
+  /* border: 1px solid #ddd; */
+  background: #fff8f0;
+  border-radius: 5px;
+  box-sizing: border-box; /* Asegura que el padding no desborde el width */
+  color: #5b4636;
+}
+
+/* Estilos del botón de restablecer (azul) */
+.reset-password-container button[type="submit"] {
+  background: #8b5e3c;
+  color: white;
+  padding: 14px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin-top: 15px; /* Espacio para el botón */
+}
+
+.reset-password-container button[type="submit"]:hover {
+  background: #7a4f2e;
+  transform: translateY(-2px);
+}
+
+.reset-password-container .error-message{
+  margin-left: 2px;
+  color: red;
+  font-size: 0.9em;
+  margin-top: -10px; /* Ajuste para que esté cerca del input */
+  margin-bottom: 10px;
+  text-align: left;
+  padding-left: 10px; /* Si quieres un pequeño indentado */
+  display: none; /* Oculto por defecto, JS lo controla */
+}
+
+
+
+/* Mensajes de error/éxito */
+#mensaje { /* Para mensajes globales del servidor */
+  margin-top: 15px;
+  font-weight: bold;
+  display: none; /* Oculto por defecto, JS lo controla */
+  text-align: center; /* Asegurar que el mensaje global esté centrado */
+}
+
+
+/* Estilos para el borde rojo de los inputs con error */
+.input-error {
+  border-color: red !important;
+}
+
+.back-to-login {
+  margin-top: 25px;
+  text-align: center;
+ 
+}
+.back-to-login a {
+  font-size: 0.95em;
+  margin-top: 20px;
+  text-decoration: none; /* Elimina el subrayado */
+  color: #8B4513;       /* Color marrón */
+  text-align: center;   /* Si quieres que este enlace esté centrado, asegúrate de que el contenedor o este mismo tenga esta propiedad */
+  display: block;  
+}
+.back-to-login a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
+/* El .success-message no es usado directamente en restablecer-contrasena.pug para #mensaje,
+   pero si lo tienes en login.css, lo mantengo aquí por consistencia.
+   El JS de restablecer-contrasena.pug ya maneja el color verde para #mensaje en caso de éxito. */
+/* .success-message {
+  color: green;
+  font-size: 0.9em;
+  margin-top: 10px;
+  text-align: center;
+} */
+
+
+
+

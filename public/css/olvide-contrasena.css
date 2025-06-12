@@ -1,0 +1,85 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+body {
+  /* Fondo beige/marrón claro tipo artesanal */
+  background: linear-gradient(135deg, #d9cbb6, #b79969);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+.reset-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #f9f5f0; /* beige muy claro */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.reset-container h1 {
+  font-family: 'Pacifico', cursive;
+   color: #8b5e3c; /* marrón cálido */
+margin-bottom: 20px;
+
+}
+.reset-container p {
+  margin-bottom: 20px;
+  color: #666;
+}
+.reset-container input[type="email"] {
+  width: calc(105% - 22px); /* Ancho del input */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.reset-container input[type="email"]:focus {
+   outline: none;
+  border-color: #8b5e3c;
+    box-shadow: 0 0 8px #8b5e3caa;
+  background: #fffdf7;
+}
+.reset-container button {
+  width: calc(105% - 22px);
+ background: #8b5e3c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.reset-container button:hover {
+    background: #7a4f2e;
+   transform: translateY(-2px);
+}
+.back-to-login {
+  margin-top: 25px;
+   color: #6a5c48;
+ 
+}
+.back-to-login a {
+  font-size: 1.05em;
+  margin-top: 20px;
+  text-decoration: none; /* Elimina el subrayado */
+  color: #8B4513;       /* Color marrón */
+  text-align: center;   /* Si quieres que este enlace esté centrado, asegúrate de que el contenedor o este mismo tenga esta propiedad */
+  display: block;  
+}
+.back-to-login a:hover {
+  text-decoration: underline;
+}
+#mensaje {
+  margin-top: 15px;
+  font-weight: bold;
+}
