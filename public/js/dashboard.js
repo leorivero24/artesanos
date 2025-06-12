@@ -199,6 +199,7 @@ window.responderSolicitud = async (solicitudId, accion) => {
     const data = await res.json();
     console.log(data.message);
     loadNotifications();
+    actualizarListaAmigos(); // 👈 recargar amigos si se aceptó
   } catch (err) {
     console.error('Error al responder solicitud:', err);
   }
