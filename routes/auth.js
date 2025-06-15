@@ -280,7 +280,7 @@ router.post('/registro', async (req, res) => {
                             <title>Registro exitoso</title>
                             <style>
                               body { font-family: sans-serif; text-align: center; padding: 50px;  background: linear-gradient(135deg, #d9cbb6, #b79969); }
-                              .mensaje { color: white; font-size: 18px; }
+                              .mensaje { color: black; font-size: 18px; }
                             </style>
                             <script>
                               setTimeout(() => {
