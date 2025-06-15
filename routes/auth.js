@@ -7,7 +7,7 @@ const db = require('../models/db'); // Asume que esta ruta es correcta para tu a
 const crypto = require('crypto');
 
 const JWT_SECRET = 'clave_super_segura'; // 🔒 RECUERDA: Mueve esto a variables de entorno (.env) en producción
-const BASE_URL = 'http://localhost:3000'; // Cambia a tu URL de producción (ej. 'https://www.artesanos.com')
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 // Configura el transporte de Nodemailer
 const transporter = nodemailer.createTransport({
