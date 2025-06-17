@@ -96,117 +96,6 @@ router.post('/api/friend-request', authMiddleware, (req, res) => {
 
 //Aceptar o rechazar solicitud de amistad - NUEVA SEGUIMIENTOS: - NOTIFICACIONES en localhost
 
-router.post('/api/users/friend-request/:id/:accion', authMiddleware, (req, res) => {
-    const receptorId = req.usuario.id;
-    const solicitudId = req.params.id;
-    const accion = req.params.accion;
-
-    if (!['accept', 'reject'].includes(accion)) {
-        return res.status(400).json({ message: 'Acción inválida.' });
-    }
-
-    pool.beginTransaction(err => {
-        if (err) {
-            console.error('Error al iniciar la transacción:', err);
-            return res.status(500).json({ message: 'Error interno del servidor.' });
-        }
-
-        const sqlGet = `
-            SELECT solicitante_id, receptor_id, estado FROM solicitudes_amistad
-            WHERE id = ? AND receptor_id = ? AND estado = 'pendiente'
-        `;
-
-        pool.query(sqlGet, [solicitudId, receptorId], (err, solicitudes) => {
-            if (err) {
-                return pool.rollback(() => {
-                    console.error('Error al buscar solicitud:', err);
-                    res.status(500).json({ message: 'Error interno del servidor.' });
-                });
-            }
-
-            if (solicitudes.length === 0) {
-                return pool.rollback(() => {
-                    res.status(404).json({ message: 'Solicitud no encontrada o ya respondida.' });
-                });
-            }
-
-            const solicitud = solicitudes[0];
-            const nuevoEstado = accion === 'accept' ? 'aceptada' : 'rechazada';
-
-            const sqlUpdate = `UPDATE solicitudes_amistad SET estado = ? WHERE id = ?`;
-
-            pool.query(sqlUpdate, [nuevoEstado, solicitudId], (err2) => {
-                if (err2) {
-                    return pool.rollback(() => {
-                        console.error('Error al actualizar solicitud:', err2);
-                        res.status(500).json({ message: 'Error interno del servidor.' });
-                    });
-                }
-
-                if (accion === 'accept') {
-                    const insertFollowsSql = `INSERT INTO seguimientos (seguidor_id, seguido_id) VALUES (?, ?), (?, ?)`;
-                    pool.query(insertFollowsSql, [
-                        solicitud.solicitante_id, solicitud.receptor_id,
-                        solicitud.receptor_id, solicitud.solicitante_id
-                    ], (err3, followResult) => {
-                        if (err3) {
-                            return pool.rollback(() => {
-                                console.error('Error al insertar seguimientos en la aceptación:', err3);
-                                res.status(500).json({ message: 'Error al establecer la amistad.' });
-                            });
-                        }
-
-                        // Notificación para el solicitante original: ACEPTADA
-                        const notificationMessage = `Tu solicitud de amistad con ${req.usuario.nombre} ${req.usuario.apellido} ha sido aceptada.`;
-                        const insertNotificationSql = 'INSERT INTO notificaciones (usuario_id, tipo, mensaje) VALUES (?, ?, ?)';
-                        pool.query(insertNotificationSql, [solicitud.solicitante_id, 'amistad_aceptada', notificationMessage], (err4, notifResult) => {
-                            if (err4) {
-                                console.error('Error al insertar notificación de amistad aceptada:', err4);
-                            }
-
-                            pool.commit(errCommit => {
-                                if (errCommit) {
-                                    return pool.rollback(() => {
-                                        console.error('Error al confirmar la transacción (aceptar):', errCommit);
-                                        res.status(500).json({ message: 'Error interno del servidor al confirmar amistad.' });
-                                    });
-                                }
-                                res.status(200).json({ message: 'Solicitud de amistad aceptada y amistad establecida.' });
-                            });
-                        });
-                    });
-                } else { // Si la acción es 'reject' (rechazar)
-                    // Notificación para el solicitante original: RECHAZADA
-                    const notificationMessage = `Tu solicitud de amistad con ${req.usuario.nombre} ${req.usuario.apellido} ha sido rechazada.`;
-                    const insertNotificationSql = 'INSERT INTO notificaciones (usuario_id, tipo, mensaje) VALUES (?, ?, ?)';
-                    pool.query(insertNotificationSql, [solicitud.solicitante_id, 'amistad_rechazada', notificationMessage], (err4, notifResult) => {
-                        if (err4) {
-                            console.error('Error al insertar notificación de amistad rechazada:', err4);
-                        }
-
-                        // Notificación en tiempo real (si aplica para rechazos, la que ya tenías)
-                        notifyRequestResponse(req.app.get('io'), solicitud.solicitante_id, {
-                          responderNombre: req.usuario.nombre,
-                          estado: nuevoEstado, // 'rechazada'
-                        });
-
-                        pool.commit(errCommit => {
-                            if (errCommit) {
-                                return pool.rollback(() => {
-                                    console.error('Error al confirmar la transacción (rechazar):', errCommit);
-                                    res.status(500).json({ message: 'Error interno del servidor al rechazar amistad.' });
-                                });
-                            }
-                            res.status(200).json({ message: `Solicitud ${nuevoEstado}.` });
-                        });
-                    });
-                }
-            });
-        });
-    });
-});
-
-//  en produccion
 // router.post('/api/users/friend-request/:id/:accion', authMiddleware, (req, res) => {
 //     const receptorId = req.usuario.id;
 //     const solicitudId = req.params.id;
@@ -216,121 +105,232 @@ router.post('/api/users/friend-request/:id/:accion', authMiddleware, (req, res) 
 //         return res.status(400).json({ message: 'Acción inválida.' });
 //     }
 
-//     pool.getConnection((err, connection) => {
+//     pool.beginTransaction(err => {
 //         if (err) {
-//             console.error('Error al obtener conexión del pool:', err);
+//             console.error('Error al iniciar la transacción:', err);
 //             return res.status(500).json({ message: 'Error interno del servidor.' });
 //         }
 
-//         connection.beginTransaction(err => {
+//         const sqlGet = `
+//             SELECT solicitante_id, receptor_id, estado FROM solicitudes_amistad
+//             WHERE id = ? AND receptor_id = ? AND estado = 'pendiente'
+//         `;
+
+//         pool.query(sqlGet, [solicitudId, receptorId], (err, solicitudes) => {
 //             if (err) {
-//                 connection.release();
-//                 console.error('Error al iniciar la transacción:', err);
-//                 return res.status(500).json({ message: 'Error interno del servidor.' });
+//                 return pool.rollback(() => {
+//                     console.error('Error al buscar solicitud:', err);
+//                     res.status(500).json({ message: 'Error interno del servidor.' });
+//                 });
 //             }
 
-//             const sqlGet = `
-//                 SELECT solicitante_id, receptor_id, estado FROM solicitudes_amistad
-//                 WHERE id = ? AND receptor_id = ? AND estado = 'pendiente'
-//             `;
+//             if (solicitudes.length === 0) {
+//                 return pool.rollback(() => {
+//                     res.status(404).json({ message: 'Solicitud no encontrada o ya respondida.' });
+//                 });
+//             }
 
-//             connection.query(sqlGet, [solicitudId, receptorId], (err, solicitudes) => {
-//                 if (err) {
-//                     return connection.rollback(() => {
-//                         connection.release();
-//                         console.error('Error al buscar solicitud:', err);
+//             const solicitud = solicitudes[0];
+//             const nuevoEstado = accion === 'accept' ? 'aceptada' : 'rechazada';
+
+//             const sqlUpdate = `UPDATE solicitudes_amistad SET estado = ? WHERE id = ?`;
+
+//             pool.query(sqlUpdate, [nuevoEstado, solicitudId], (err2) => {
+//                 if (err2) {
+//                     return pool.rollback(() => {
+//                         console.error('Error al actualizar solicitud:', err2);
 //                         res.status(500).json({ message: 'Error interno del servidor.' });
 //                     });
 //                 }
 
-//                 if (solicitudes.length === 0) {
-//                     return connection.rollback(() => {
-//                         connection.release();
-//                         res.status(404).json({ message: 'Solicitud no encontrada o ya respondida.' });
-//                     });
-//                 }
-
-//                 const solicitud = solicitudes[0];
-//                 const nuevoEstado = accion === 'accept' ? 'aceptada' : 'rechazada';
-
-//                 const sqlUpdate = `UPDATE solicitudes_amistad SET estado = ? WHERE id = ?`;
-
-//                 connection.query(sqlUpdate, [nuevoEstado, solicitudId], (err2) => {
-//                     if (err2) {
-//                         return connection.rollback(() => {
-//                             connection.release();
-//                             console.error('Error al actualizar solicitud:', err2);
-//                             res.status(500).json({ message: 'Error interno del servidor.' });
-//                         });
-//                     }
-
-//                     if (accion === 'accept') {
-//                         const insertFollowsSql = `INSERT INTO seguimientos (seguidor_id, seguido_id) VALUES (?, ?), (?, ?)`;
-//                         connection.query(insertFollowsSql, [
-//                             solicitud.solicitante_id, solicitud.receptor_id,
-//                             solicitud.receptor_id, solicitud.solicitante_id
-//                         ], (err3) => {
-//                             if (err3) {
-//                                 return connection.rollback(() => {
-//                                     connection.release();
-//                                     console.error('Error al insertar seguimientos:', err3);
-//                                     res.status(500).json({ message: 'Error al establecer la amistad.' });
-//                                 });
-//                             }
-
-//                             const notificationMessage = `Tu solicitud de amistad con ${req.usuario.nombre} ${req.usuario.apellido} ha sido aceptada.`;
-//                             const insertNotificationSql = 'INSERT INTO notificaciones (usuario_id, tipo, mensaje) VALUES (?, ?, ?)';
-//                             connection.query(insertNotificationSql, [solicitud.solicitante_id, 'amistad_aceptada', notificationMessage], (err4) => {
-//                                 if (err4) {
-//                                     console.error('Error al insertar notificación (aceptada):', err4);
-//                                 }
-
-//                                 connection.commit(errCommit => {
-//                                     if (errCommit) {
-//                                         return connection.rollback(() => {
-//                                             connection.release();
-//                                             console.error('Error al hacer commit:', errCommit);
-//                                             res.status(500).json({ message: 'Error al confirmar amistad.' });
-//                                         });
-//                                     }
-
-//                                     connection.release();
-//                                     res.status(200).json({ message: 'Solicitud de amistad aceptada y amistad establecida.' });
-//                                 });
+//                 if (accion === 'accept') {
+//                     const insertFollowsSql = `INSERT INTO seguimientos (seguidor_id, seguido_id) VALUES (?, ?), (?, ?)`;
+//                     pool.query(insertFollowsSql, [
+//                         solicitud.solicitante_id, solicitud.receptor_id,
+//                         solicitud.receptor_id, solicitud.solicitante_id
+//                     ], (err3, followResult) => {
+//                         if (err3) {
+//                             return pool.rollback(() => {
+//                                 console.error('Error al insertar seguimientos en la aceptación:', err3);
+//                                 res.status(500).json({ message: 'Error al establecer la amistad.' });
 //                             });
-//                         });
-//                     } else {
-//                         const notificationMessage = `Tu solicitud de amistad con ${req.usuario.nombre} ${req.usuario.apellido} ha sido rechazada.`;
+//                         }
+
+//                         // Notificación para el solicitante original: ACEPTADA
+//                         const notificationMessage = `Tu solicitud de amistad con ${req.usuario.nombre} ${req.usuario.apellido} ha sido aceptada.`;
 //                         const insertNotificationSql = 'INSERT INTO notificaciones (usuario_id, tipo, mensaje) VALUES (?, ?, ?)';
-//                         connection.query(insertNotificationSql, [solicitud.solicitante_id, 'amistad_rechazada', notificationMessage], (err4) => {
+//                         pool.query(insertNotificationSql, [solicitud.solicitante_id, 'amistad_aceptada', notificationMessage], (err4, notifResult) => {
 //                             if (err4) {
-//                                 console.error('Error al insertar notificación (rechazada):', err4);
+//                                 console.error('Error al insertar notificación de amistad aceptada:', err4);
 //                             }
 
-//                             notifyRequestResponse(req.app.get('io'), solicitud.solicitante_id, {
-//                                 responderNombre: req.usuario.nombre,
-//                                 estado: nuevoEstado,
-//                             });
-
-//                             connection.commit(errCommit => {
+//                             pool.commit(errCommit => {
 //                                 if (errCommit) {
-//                                     return connection.rollback(() => {
-//                                         connection.release();
-//                                         console.error('Error al hacer commit (rechazo):', errCommit);
-//                                         res.status(500).json({ message: 'Error al rechazar amistad.' });
+//                                     return pool.rollback(() => {
+//                                         console.error('Error al confirmar la transacción (aceptar):', errCommit);
+//                                         res.status(500).json({ message: 'Error interno del servidor al confirmar amistad.' });
 //                                     });
 //                                 }
-
-//                                 connection.release();
-//                                 res.status(200).json({ message: `Solicitud ${nuevoEstado}.` });
+//                                 res.status(200).json({ message: 'Solicitud de amistad aceptada y amistad establecida.' });
 //                             });
 //                         });
-//                     }
-//                 });
+//                     });
+//                 } else { // Si la acción es 'reject' (rechazar)
+//                     // Notificación para el solicitante original: RECHAZADA
+//                     const notificationMessage = `Tu solicitud de amistad con ${req.usuario.nombre} ${req.usuario.apellido} ha sido rechazada.`;
+//                     const insertNotificationSql = 'INSERT INTO notificaciones (usuario_id, tipo, mensaje) VALUES (?, ?, ?)';
+//                     pool.query(insertNotificationSql, [solicitud.solicitante_id, 'amistad_rechazada', notificationMessage], (err4, notifResult) => {
+//                         if (err4) {
+//                             console.error('Error al insertar notificación de amistad rechazada:', err4);
+//                         }
+
+//                         // Notificación en tiempo real (si aplica para rechazos, la que ya tenías)
+//                         notifyRequestResponse(req.app.get('io'), solicitud.solicitante_id, {
+//                           responderNombre: req.usuario.nombre,
+//                           estado: nuevoEstado, // 'rechazada'
+//                         });
+
+//                         pool.commit(errCommit => {
+//                             if (errCommit) {
+//                                 return pool.rollback(() => {
+//                                     console.error('Error al confirmar la transacción (rechazar):', errCommit);
+//                                     res.status(500).json({ message: 'Error interno del servidor al rechazar amistad.' });
+//                                 });
+//                             }
+//                             res.status(200).json({ message: `Solicitud ${nuevoEstado}.` });
+//                         });
+//                     });
+//                 }
 //             });
 //         });
 //     });
 // });
+
+//  en produccion
+router.post('/api/users/friend-request/:id/:accion', authMiddleware, (req, res) => {
+    const receptorId = req.usuario.id;
+    const solicitudId = req.params.id;
+    const accion = req.params.accion;
+
+    if (!['accept', 'reject'].includes(accion)) {
+        return res.status(400).json({ message: 'Acción inválida.' });
+    }
+
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.error('Error al obtener conexión del pool:', err);
+            return res.status(500).json({ message: 'Error interno del servidor.' });
+        }
+
+        connection.beginTransaction(err => {
+            if (err) {
+                connection.release();
+                console.error('Error al iniciar la transacción:', err);
+                return res.status(500).json({ message: 'Error interno del servidor.' });
+            }
+
+            const sqlGet = `
+                SELECT solicitante_id, receptor_id, estado FROM solicitudes_amistad
+                WHERE id = ? AND receptor_id = ? AND estado = 'pendiente'
+            `;
+
+            connection.query(sqlGet, [solicitudId, receptorId], (err, solicitudes) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        connection.release();
+                        console.error('Error al buscar solicitud:', err);
+                        res.status(500).json({ message: 'Error interno del servidor.' });
+                    });
+                }
+
+                if (solicitudes.length === 0) {
+                    return connection.rollback(() => {
+                        connection.release();
+                        res.status(404).json({ message: 'Solicitud no encontrada o ya respondida.' });
+                    });
+                }
+
+                const solicitud = solicitudes[0];
+                const nuevoEstado = accion === 'accept' ? 'aceptada' : 'rechazada';
+
+                const sqlUpdate = `UPDATE solicitudes_amistad SET estado = ? WHERE id = ?`;
+
+                connection.query(sqlUpdate, [nuevoEstado, solicitudId], (err2) => {
+                    if (err2) {
+                        return connection.rollback(() => {
+                            connection.release();
+                            console.error('Error al actualizar solicitud:', err2);
+                            res.status(500).json({ message: 'Error interno del servidor.' });
+                        });
+                    }
+
+                    if (accion === 'accept') {
+                        const insertFollowsSql = `INSERT INTO seguimientos (seguidor_id, seguido_id) VALUES (?, ?), (?, ?)`;
+                        connection.query(insertFollowsSql, [
+                            solicitud.solicitante_id, solicitud.receptor_id,
+                            solicitud.receptor_id, solicitud.solicitante_id
+                        ], (err3) => {
+                            if (err3) {
+                                return connection.rollback(() => {
+                                    connection.release();
+                                    console.error('Error al insertar seguimientos:', err3);
+                                    res.status(500).json({ message: 'Error al establecer la amistad.' });
+                                });
+                            }
+
+                            const notificationMessage = `Tu solicitud de amistad con ${req.usuario.nombre} ${req.usuario.apellido} ha sido aceptada.`;
+                            const insertNotificationSql = 'INSERT INTO notificaciones (usuario_id, tipo, mensaje) VALUES (?, ?, ?)';
+                            connection.query(insertNotificationSql, [solicitud.solicitante_id, 'amistad_aceptada', notificationMessage], (err4) => {
+                                if (err4) {
+                                    console.error('Error al insertar notificación (aceptada):', err4);
+                                }
+
+                                connection.commit(errCommit => {
+                                    if (errCommit) {
+                                        return connection.rollback(() => {
+                                            connection.release();
+                                            console.error('Error al hacer commit:', errCommit);
+                                            res.status(500).json({ message: 'Error al confirmar amistad.' });
+                                        });
+                                    }
+
+                                    connection.release();
+                                    res.status(200).json({ message: 'Solicitud de amistad aceptada y amistad establecida.' });
+                                });
+                            });
+                        });
+                    } else {
+                        const notificationMessage = `Tu solicitud de amistad con ${req.usuario.nombre} ${req.usuario.apellido} ha sido rechazada.`;
+                        const insertNotificationSql = 'INSERT INTO notificaciones (usuario_id, tipo, mensaje) VALUES (?, ?, ?)';
+                        connection.query(insertNotificationSql, [solicitud.solicitante_id, 'amistad_rechazada', notificationMessage], (err4) => {
+                            if (err4) {
+                                console.error('Error al insertar notificación (rechazada):', err4);
+                            }
+
+                            notifyRequestResponse(req.app.get('io'), solicitud.solicitante_id, {
+                                responderNombre: req.usuario.nombre,
+                                estado: nuevoEstado,
+                            });
+
+                            connection.commit(errCommit => {
+                                if (errCommit) {
+                                    return connection.rollback(() => {
+                                        connection.release();
+                                        console.error('Error al hacer commit (rechazo):', errCommit);
+                                        res.status(500).json({ message: 'Error al rechazar amistad.' });
+                                    });
+                                }
+
+                                connection.release();
+                                res.status(200).json({ message: `Solicitud ${nuevoEstado}.` });
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    });
+});
 
 
 
