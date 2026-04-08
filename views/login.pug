@@ -1,0 +1,35 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title artesanos.com - Iniciar Sesión
+    link(rel="stylesheet" href="/css/login.css")
+    link(href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet")
+    link(rel="icon", href="/uploads/icon.png", type="image/png")
+
+
+  body
+    .login-container
+      h1 artesanos.com
+      form#loginForm(action="/login" method="POST", novalidate)
+        input(type="email" id="email" name="email" placeholder="Correo electrónico")
+        p.error-message#emailError
+
+        input(type="password" id="contrasena" name="contrasena" placeholder="Contraseña")
+        p.error-message#contrasenaError
+
+        button(type="submit") Iniciar Sesión
+
+        p#mensaje(style=`color: red; display: none;`)
+
+      a.forgot-password-link(href="/olvide-contrasena") ¿Olvidaste tu contraseña?
+
+      p.footer-text
+        | ¿No tienes cuenta?
+        a(href="/registro") Regístrate aquí
+
+
+        script(src="/js/login.js")
+
+    

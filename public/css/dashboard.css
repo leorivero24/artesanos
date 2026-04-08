@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding-top: 56px;
+}
+
+.navbar {
+  background: linear-gradient(135deg, #d9cbb6, #b79969);
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.navbar-brand {
+  font-family: 'Pacifico', cursive;
+  color: #8b5e3c;
+  font-size: 1.75rem;
+  font-weight: bold;
+  padding-left: 15px;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover,
+.navbar-brand:focus {
+  color: #7a4f2e;
+}
+
+.navbar .nav-link {
+  color: #343a40 !important;
+  font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+  background-color: #e9ecef;
+  border-radius: 5px;
+}
+
+.navbar .form-control {
+  border-radius: 20px;
+  max-width: 250px;
+}
+
+.navbar .btn-outline-secondary {
+  border-radius: 20px;
+}
+
+.navbar .btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Avatar principal */
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #8b5e3c;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Avatar pequeño */
+.avatar-sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #b79969;
+  flex-shrink: 0;
+}
+
+/* Cards */
+.card {
+  border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Publicaciones */
+.card-img-top {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Contenedor principal */
+.container.mt-4 {
+  
+  margin-top: 100px;
+}
+
+/* Formulario de comentario */
+form[data-comentario] .input-group {
+  margin-top: 10px;
+}
+
+/* Sidebar */
+.card 
+unded-circle {
+  border: 2px solid #b79969;
+}
+
+.card h5 {
+  font-weight: 600;
+}
+
+/* Lista de amigos */
+#amigos-list {
+  margin-bottom: 30px;
+}
+
+#amigos-list li {
+  margin-bottom: 10px;
+  
+  align-items: left;
+  
+}
+
+#amigos-list li img {
+  margin-right: 30px;
+}
+
+/* Resultados búsqueda */
+#searchResults.list-group {
+  margin-top: 20px;
+  padding-left: 5px; /* más a la izquierda */
+}
+
+#searchResults .list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  gap: 10px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+}
+
+#searchResults .btn-sm {
+  margin-left: 5px;
+  min-width: 100px;
+  white-space: nowrap;
+  background-color: #b79969;
+  border-color: #b79969;
+  color: #fff;
+}
+
+#searchResults .btn-sm:hover {
+  background-color: #a0825e;
+  border-color: #a0825e;
+}
+
+/* Notificaciones */
+#notificationList li {
+  font-size: 0.9rem;
+}
+
+#notificationCount {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+}
+
+/* Toast */
+#toastContainer {
+  z-index: 9999;
+}
+
+/* Personalización adicional */
+.card.p-3,
+.card.mb-3.p-3.text-center {
+  background-color: #d9cbb6;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08); /* sutil sombra */
+  
+}
+
+
+
+
+/* Columna izquierda */
+.col-md-3 {
+  padding-left: 1px;
+  
+}
+
+#sidebarUserName {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px; /* debe coincidir con el tamaño del avatar */
+  margin-top: -90px; /* lo sube hasta alinearlo con la imagen */
+  margin-left: 80px; /* lo empuja hacia la derecha al lado del avatar */
+  text-align: left;
+}
+
+/* Albumes */
+.album-card {
+  background-color: #d9cbb6 !important;
+  border: none;
+}
+
+.album-img {
+  height: 300px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.comentario {
+  background: #f8f9fa;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.comentarios-imagen-container {
+  margin-top: 10px;
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+
+/*MODAL DENUNCIAS*/
+
+/* .modal-content {
+  background-color: #4b2e17ad;
+  color: rgb(240, 239, 239);
+} */
+
+
+.custom-modal-color {
+  background-color :#b47846ad; /* color de fondo */
+  color: rgb(248, 245, 245); /* texto claro */
+}
+.custom-modal-color .modal-header,
+.custom-modal-color .modal-footer {
+  border-color: #070706; /* borde oscuro */
+}
+
+
+
+
+
+/* Responsive */
+@media (max-width: 767px) {
+  .navbar .form-control {
+    max-width: 100%;
+  }
+
+  .container.mt-4 {
+    margin-top: 80px;
+  }
+}

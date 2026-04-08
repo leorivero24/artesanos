@@ -1,0 +1,33 @@
+
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Restablecer Contraseña - artesanos.com
+    link(href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap", rel="stylesheet")
+    // Este es el único enlace a tus estilos CSS de aplicación
+    link(rel="stylesheet", href="/css/restablecer.css") 
+    link(rel="icon", href="/uploads/icon.png", type="image/png")
+  body
+    .reset-password-container
+      h1 Restablecer Contraseña
+      p Ingresa tu nueva contraseña.
+
+      form#restablecerContrasenaForm(action="/restablecer-contrasena", method="POST", novalidate)
+        input(type="hidden", id="token", name="token", value=token)
+
+        input(type="password", id="nuevaContrasena", name="nuevaContrasena", placeholder="Nueva Contraseña")
+        p.error-message#nuevaContrasenaError
+
+        input(type="password", id="confirmarContrasena", name="confirmarContrasena", placeholder="Confirmar Contraseña")
+        p.error-message#confirmarContrasenaError
+
+        button(type="submit") Restablecer Contraseña
+
+        p#mensaje(style="display: none;")
+
+        p.back-to-login
+          a(href="/login") Volver al Login
+
+        script(src="/js/restablecer-contrasena.js")

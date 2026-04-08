@@ -1,0 +1,70 @@
+
+link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css")
+
+nav.navbar.navbar-expand-lg.navbar-light
+  .container-fluid
+    a.navbar-brand(href="/dashboard") Artesanos.com
+    button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav")
+      span.navbar-toggler-icon
+    #navbarNav.collapse.navbar-collapse
+      ul.navbar-nav.me-auto.mb-2.mb-lg-0
+        li.nav-item
+          a.nav-link(href="/inicio")
+            i.bi.bi-house-door.me-1
+            | Inicio
+        li.nav-item
+          a.nav-link(href="/amigos")
+            i.bi.bi-people.me-1
+            | Gente
+
+        li.nav-item.ms-3
+          form#searchForm.d-flex
+            input#searchInput.form-control.me-2(type="search" placeholder="Buscar Seguidores...")
+            button.btn.btn-outline-secondary(type="submit")
+              i.bi.bi-search
+
+        li.nav-item.ms-2
+          a.nav-link(href="/mis-albumes")
+            i.bi.bi-images.me-1
+            | Mis Álbumes      
+
+        li.nav-item.ms-2
+          a.nav-link(href="/albumes-compartidos")
+            i.fa-solid.fa-share
+            |  Albumes Compartidos...
+
+      ul.navbar-nav.ms-auto.mb-2.mb-lg-0.align-items-center
+        li.nav-item.dropdown.me-3 
+          a.nav-link.dropdown-toggle(href="#" id="notificationIcon" role="button" data-bs-toggle="dropdown") 
+            i.bi.bi-bell 
+            span#notificationCount.badge.bg-danger.rounded-pill(style="display: none") 0
+          ul.dropdown-menu.dropdown-menu-end.p-2(style="min-width: 250px;" id="notificationList")
+            li.text-center.text-muted#noNotifications No hay solicitudes pendientes
+
+        li.nav-item.dropdown.d-flex.align-items-center
+          - var avatarUrl = (usuario && usuario.imagen_perfil) ? '/uploads/' + usuario.imagen_perfil : '/uploads/default-avatar.png'
+          - var nombreUsuario = (usuario && usuario.nombre) ? usuario.nombre : 'Usuario'
+          - var apellidoUsuario = (usuario && usuario.apellido) ? usuario.apellido : ''
+
+          label(for="avatarUploadInput" style="cursor: pointer; margin-bottom: 0;")
+            img.avatar#userAvatar(
+              src=avatarUrl
+              alt="Avatar"
+             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"
+            )
+          input(type="file" id="avatarUploadInput" accept="image/*" style="display: none;")
+
+          a.nav-link.dropdown-toggle#userNameDropdown(href="#" role="button" data-bs-toggle="dropdown")
+            span#userName.ms-2 #{nombreUsuario} #{apellidoUsuario}
+
+          ul.dropdown-menu.dropdown-menu-end
+            li
+              a.dropdown-item(href="/perfil") Mi Perfil
+            li
+              a.dropdown-item(href="/configuracion-perfil") Configuración
+            li.hr.dropdown-divider
+            li
+              a.dropdown-item(href="javascript:void(0)" onclick="logout()") Cerrar Sesión
+
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/navbar.js")

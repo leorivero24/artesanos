@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding-top: 56px;
+}
+
+.navbar {
+  background: linear-gradient(135deg, #d9cbb6, #b79969);
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.navbar-brand {
+  font-family: 'Pacifico', cursive;
+  color: #8b5e3c;
+  font-size: 1.75rem;
+  font-weight: bold;
+  padding-left: 15px;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover,
+.navbar-brand:focus {
+  color: #7a4f2e;
+}
+
+.navbar .nav-link {
+  color: #343a40 !important;
+  font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+  background-color: #e9ecef;
+  border-radius: 5px;
+}
+
+.navbar .form-control {
+  border-radius: 20px;
+  max-width: 250px;
+}
+
+.navbar .btn-outline-secondary {
+  border-radius: 20px;
+}
+
+.navbar .btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Avatares */
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #8b5e3c;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Cards */
+.card {
+  border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 100%;
+  background-color: #d9cbb6; /* uniform background */
+}
+
+/* Publicaciones */
+.card-img-top {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Contenedor principal */
+.container-md {
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 100px;
+}
+
+/* Formularios de comentario */
+form[data-comentario] .input-group {
+  margin-top: 10px;
+}
+
+/* Albumes */
+.album-card {
+  background-color: #d9cbb6 !important;
+  border: none;
+  margin-bottom: 1rem;
+}
+
+.album-img {
+  height: 300px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+}
+
+
+
+
+
+.comentarios-imagen {
+  display: flex;
+  flex-direction: column; /* ⬅️ importante para apilar verticalmente */
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: #f8f9fa;
+  margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+/* Responsive */
+@media (max-width: 767px) {
+  .navbar .form-control {
+    max-width: 100%;
+  }
+
+  .container.mt-4 {
+    margin-top: 80px;
+  }
+}

@@ -1,0 +1,43 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title artesanos.com - Registro
+    link(rel="stylesheet", href="/css/registro.css")
+    link(href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap", rel="stylesheet")
+    link(rel="icon", href="/uploads/icon.png", type="image/png")
+
+
+  body
+    .register-container
+      h1 Registración
+      form#registroForm(action="/registro", method="POST", novalidate)
+        label(for="nombre") Nombre
+        input(type="text", id="nombre", name="nombre", placeholder="Tu nombre")
+        p.error-message#nombreError
+
+        // Campo para Apellido
+        label(for="apellido") Apellido
+        input(type="text", id="apellido", name="apellido", placeholder="Tu apellido")
+        p.error-message#apellidoError
+
+        label(for="email") Correo electrónico
+        input(type="email", id="email", name="email", placeholder="Tu email")
+        p.error-message#emailError
+
+        label(for="contrasena") Contraseña
+        input(type="password", id="contrasena", name="contrasena", placeholder="Contraseña")
+        p.error-message#contrasenaError
+
+        button(type="submit") Regístrate
+
+        // Este es el párrafo que mostrará el mensaje del servidor (desde el res.render)
+        if mensaje
+          p#mensaje(style=`color: ${tipo === 'exito' ? 'green' : 'red'}`)= mensaje
+          
+      p.footer-text
+        | ¿Ya tienes una cuenta?
+        a(href="/login") Inicia sesión aquí
+
+        script(src="/js/registro.js")

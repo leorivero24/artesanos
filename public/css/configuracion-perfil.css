@@ -1,0 +1,152 @@
+/* Estilos para el formulario de configuración de perfil */
+
+#formEditarPerfil {
+  background-color: #d9cbb6; /* color base suave */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#formEditarPerfil .form-label {
+  font-weight: 600;
+  color: #6b4f2c;
+}
+
+#formEditarPerfil .form-control {
+  border-radius: 8px;
+  border: 1px solid #b79969;
+  padding: 10px 15px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+#formEditarPerfil .form-control:focus {
+  border-color: #8b5e3c;
+  box-shadow: 0 0 5px rgba(139, 94, 60, 0.5);
+}
+
+#formEditarPerfil textarea.form-control {
+  resize: vertical;
+}
+
+#formEditarPerfil button.btn-primary {
+  background-color: #b79969;
+  border-color: #b79969;
+  border-radius: 8px;
+  padding: 10px 25px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#formEditarPerfil button.btn-primary:hover {
+  background-color: #a0825e;
+  border-color: #a0825e;
+}
+
+#formEditarPerfil img.mt-2 {
+  border-radius: 50%;
+  border: 2px solid #b79969;
+  max-width: 80px;
+  object-fit: cover;
+  margin-top: 0.5rem;
+}
+
+/* Separación y espaciado */
+#formEditarPerfil .mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+#formEditarPerfil hr {
+  border-color: #b79969;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+#formEditarPerfil h5 {
+  color: #6b4f2c;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #b79969;
+  padding-bottom: 0.3rem;
+}
+
+h2.mb-4 {
+  text-align: center;
+}
+
+
+/* Estilos para el formulario de configuración de contraseña */
+
+#formCambiarPassword {
+  background-color: #d9cbb6; /* igual que el de perfil */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#formCambiarPassword .form-label {
+  font-weight: 600;
+  color: #6b4f2c;
+}
+
+#formCambiarPassword .form-control {
+  border-radius: 8px;
+  border: 1px solid #b79969;
+  padding: 10px 15px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+#formCambiarPassword .form-control:focus {
+  border-color: #8b5e3c;
+  box-shadow: 0 0 5px rgba(139, 94, 60, 0.5);
+}
+
+#formCambiarPassword button.btn-warning {
+  background-color: #b79969;
+  border-color: #b79969;
+  border-radius: 8px;
+  padding: 10px 25px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: #fff;
+}
+
+#formCambiarPassword button.btn-warning:hover {
+  background-color: #a0825e;
+  border-color: #a0825e;
+}
+
+#formCambiarPassword .mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+#formCambiarPassword h4 {
+  color: #6b4f2c;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #b79969;
+  padding-bottom: 0.3rem;
+  text-align: center;
+}
+
+
+.toastContainer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+
+
+/* Responsive */
+@media (max-width: 576px) {
+  #formCambiarPassword {
+    padding: 2rem 1rem;
+  }
+}
