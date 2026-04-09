@@ -1,44 +1,44 @@
-const mysql = require('mysql2');
+// // const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',         // tu usuario de MySQL
-  password: '',         // tu contraseña de MySQL
-  database: 'artesanos' // nombre de la base de datos
-});
+// // const db = mysql.createConnection({
+// //   host: 'localhost',
+// //   user: 'root',         // tu usuario de MySQL
+// //   password: '',         // tu contraseña de MySQL
+// //   database: 'artesanos' // nombre de la base de datos
+// // });
 
-db.connect((err) => {
-  if (err) {
-    console.error('Error al conectar con la base de datos:', err);
-    return;
-  }
-  console.log('🟢 Conectado a la base de datos artesanos');
-});
+// // db.connect((err) => {
+// //   if (err) {
+// //     console.error('Error al conectar con la base de datos:', err);
+// //     return;
+// //   }
+// //   console.log('🟢 Conectado a la base de datos artesanos');
+// // });
 
-module.exports = db;
+// // module.exports = db;
 
 
-// const mysql = require('mysql2');
+// // const mysql = require('mysql2');
 
-// // Crear la conexión usando variables de entorno
-// const db = mysql.createConnection({
-//   host: process.env.DB_HOST,
-//   port: process.env.DB_PORT,       // Puerto personalizado desde Railway
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_NAME
-// });
+// // // Crear la conexión usando variables de entorno
+// // const db = mysql.createConnection({
+// //   host: process.env.DB_HOST,
+// //   port: process.env.DB_PORT,       // Puerto personalizado desde Railway
+// //   user: process.env.DB_USER,
+// //   password: process.env.DB_PASSWORD,
+// //   database: process.env.DB_NAME
+// // });
 
-// // Intentar conectar
-// db.connect((err) => {
-//   if (err) {
-//     console.error('❌ Error al conectar con la base de datos:', err.message);
-//     return;
-//   }
-//   console.log('🟢 Conectado a la base de datos MySQL en Railway');
-// });
+// // // Intentar conectar
+// // db.connect((err) => {
+// //   if (err) {
+// //     console.error('❌ Error al conectar con la base de datos:', err.message);
+// //     return;
+// //   }
+// //   console.log('🟢 Conectado a la base de datos MySQL en Railway');
+// // });
 
-// module.exports = db;
+// // module.exports = db;
 
 
 // const mysql = require('mysql2');
@@ -69,3 +69,35 @@ module.exports = db;
 
 
 
+const mysql = require('mysql2');
+
+// DEBUG: verificar que Render esté leyendo las variables
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_NAME:', process.env.DB_NAME);
+
+// Creamos pool de conexiones
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || 'localhost',
+  port: Number(process.env.DB_PORT) || 3306,
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'artesanos',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  connectTimeout: 10000
+});
+
+// Probamos conexión
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error('❌ Error al conectar con la base de datos:');
+    console.error(err);
+  } else {
+    console.log('🟢 Conectado correctamente a MySQL');
+    connection.release();
+  }
+});
+
+module.exports = pool;
