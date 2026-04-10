@@ -15,17 +15,32 @@ function mostrarToastDashboard(mensaje, tipo = 'info') {
 
   toastBody.textContent = mensaje;
 
-  // Cambiar estilos según tipo
-  toastEl.classList.remove('bg-success', 'bg-danger', 'bg-info', 'text-white');
+  // Limpiar clases anteriores
+  toastEl.classList.remove(
+    'bg-success',
+    'bg-danger',
+    'bg-info',
+    'bg-warning',
+    'text-white',
+    'text-dark'
+  );
+
   switch (tipo) {
     case 'success':
       toastEl.classList.add('bg-success', 'text-white');
       toastHeader.textContent = 'Éxito';
       break;
+
     case 'error':
       toastEl.classList.add('bg-danger', 'text-white');
       toastHeader.textContent = 'Error';
       break;
+
+    case 'warning':
+      toastEl.classList.add('bg-warning', 'text-dark');
+      toastHeader.textContent = 'Advertencia';
+      break;
+
     default:
       toastEl.classList.add('bg-info', 'text-white');
       toastHeader.textContent = 'Información';
@@ -109,8 +124,11 @@ function crearFormularioPublicacion() {
     const tagsText = document.getElementById('tagsInput').value.trim();
     const visibilidad = visSelect.value;
 
-    if (!imagen) {
-      mostrarToastDashboard('Selecciona una imagen.', 'error');
+    if (!descripcion) {
+      mostrarToastDashboard('⚠️ Crea una descripción para tu publicación.', 'warning');
+      return;
+    } else if(!imagen){
+      mostrarToastDashboard('⚠️ Selecciona una imagen.', 'warning');
       return;
     }
 
@@ -308,8 +326,8 @@ async function cargarMisPublicaciones() {
 
           <p>
             ${pub.tags && pub.tags.length > 0
-              ? pub.tags.map(tag => `<span class="badge bg-secondary me-1">#${tag}</span>`).join(' ')
-              : ''}
+          ? pub.tags.map(tag => `<span class="badge bg-secondary me-1">#${tag}</span>`).join(' ')
+          : ''}
           </p>
 
           <p class="text-muted small">Fecha: ${new Date(pub.fecha_publicacion).toLocaleString()}</p>

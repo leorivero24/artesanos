@@ -6,6 +6,8 @@ async function logout() {
   window.location.href = '/login';
 }
 
+
+
 function mostrarToastDashboard(mensaje, tipo = 'info') {
   const toastEl = document.getElementById('respuestaToast');
   if (!toastEl) return;
@@ -15,17 +17,32 @@ function mostrarToastDashboard(mensaje, tipo = 'info') {
 
   toastBody.textContent = mensaje;
 
-  // Cambiar estilos según tipo
-  toastEl.classList.remove('bg-success', 'bg-danger', 'bg-info', 'text-white');
+  // Limpiar clases anteriores
+  toastEl.classList.remove(
+    'bg-success',
+    'bg-danger',
+    'bg-info',
+    'bg-warning',
+    'text-white',
+    'text-dark'
+  );
+
   switch (tipo) {
     case 'success':
       toastEl.classList.add('bg-success', 'text-white');
       toastHeader.textContent = 'Éxito';
       break;
+
     case 'error':
       toastEl.classList.add('bg-danger', 'text-white');
       toastHeader.textContent = 'Error';
       break;
+
+    case 'warning':
+      toastEl.classList.add('bg-warning', 'text-dark');
+      toastHeader.textContent = 'Advertencia';
+      break;
+
     default:
       toastEl.classList.add('bg-info', 'text-white');
       toastHeader.textContent = 'Información';
@@ -34,8 +51,6 @@ function mostrarToastDashboard(mensaje, tipo = 'info') {
   const toast = new bootstrap.Toast(toastEl);
   toast.show();
 }
-
-
 
 
 function crearFormularioPublicacion() {
@@ -110,8 +125,11 @@ function crearFormularioPublicacion() {
     const tagsText = document.getElementById('tagsInput').value.trim();
     const visibilidad = visSelect.value;
 
-    if (!imagen) {
-      mostrarToastDashboard('Selecciona una imagen.', 'error');
+     if (!descripcion) {
+      mostrarToastDashboard('⚠️ Crea una descripción para tu publicación.', 'warning');
+      return;
+    } else if(!imagen){
+      mostrarToastDashboard('⚠️ Selecciona una imagen.', 'warning');
       return;
     }
 

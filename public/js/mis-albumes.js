@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
 
         if(!titulo){
-          mostrarToastDashboard('⚠️ Selecciona un título.','warning');
+          mostrarToastDashboard('⚠️ Crea un título para tu álbum.','warning');
           return;
         }else if(imagenes.length === 0){
           mostrarToastDashboard('⚠️ Selecciona una imagen.','warning');
