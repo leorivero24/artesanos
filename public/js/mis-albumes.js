@@ -1,4 +1,47 @@
 
+function mostrarToastDashboard(mensaje, tipo = 'info') {
+  const toastEl = document.getElementById('respuestaToast');
+  if (!toastEl) return;
+
+  const toastBody = toastEl.querySelector('.toast-body');
+  const toastHeader = toastEl.querySelector('.toast-header strong.me-auto');
+
+  toastBody.textContent = mensaje;
+
+  // Limpiar clases anteriores
+  toastEl.classList.remove(
+    'bg-success',
+    'bg-danger',
+    'bg-info',
+    'bg-warning',
+    'text-white',
+    'text-dark'
+  );
+
+  switch (tipo) {
+    case 'success':
+      toastEl.classList.add('bg-success', 'text-white');
+      toastHeader.textContent = 'Éxito';
+      break;
+
+    case 'error':
+      toastEl.classList.add('bg-danger', 'text-white');
+      toastHeader.textContent = 'Error';
+      break;
+
+    case 'warning':
+      toastEl.classList.add('bg-warning', 'text-dark');
+      toastHeader.textContent = 'Advertencia';
+      break;
+
+    default:
+      toastEl.classList.add('bg-info', 'text-white');
+      toastHeader.textContent = 'Información';
+  }
+
+  const toast = new bootstrap.Toast(toastEl);
+  toast.show();
+}
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -30,9 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const imagenes = document.getElementById('imagenesAlbum').files;
         const tags = document.getElementById('tagsAlbum').value.trim();
 
-        if (!titulo || imagenes.length === 0) {
-          return alert('Debes ingresar un título y al menos una imagen.');
+      
+          
+      
+
+        if(!titulo){
+          mostrarToastDashboard('⚠️ Selecciona un título.','warning');
+          return;
+        }else if(imagenes.length === 0){
+          mostrarToastDashboard('⚠️ Selecciona una imagen.','warning');
+          return;
         }
+
+    
 
         const formData = new FormData();
         formData.append('titulo', titulo);
@@ -73,7 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           if (res.ok) {
-            alert('✅ Álbum creado correctamente');
+            
+            mostrarToastDashboard('✅ Album creado con éxito', 'success');
             form.reset();
             cargarAlbumes();
           } else {
