@@ -366,11 +366,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (welcomeHeading) welcomeHeading.textContent = `¡Bienvenido ${user.nombre} ${user.apellido}!`;
 
       const avatar = document.getElementById('userAvatar');
-    if (avatar) {
-      avatar.src = user.imagen_perfil
-        ? `/uploads/${user.imagen_perfil}`
-        : '/uploads/default-avatar.png';
-    }
+      if (avatar) {
+        avatar.src = user.imagen_perfil
+          ? `/uploads/${user.imagen_perfil}`
+          : '/uploads/default-avatar.png';
+      }
 
       // ✅ Conexión única a socket.io
       const socket = io();
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof cargarPublicaciones === 'function') {
           cargarPublicaciones();
         }
-        if(typeof cargarAlbumes === 'function') {
+        if (typeof cargarAlbumes === 'function') {
           cargarAlbumes();
         }
       });
@@ -419,152 +419,133 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-const avatar = document.getElementById('userAvatar');
-const avatarInput = document.getElementById('avatarUploadInput');
+  const avatar = document.getElementById('userAvatar');
+  const avatarInput = document.getElementById('avatarUploadInput');
 
-if (avatarInput) {
-  avatarInput.addEventListener('change', async e => {
-    const file = e.target.files[0];
-    if (!file) return;
+  if (avatarInput) {
+    avatarInput.addEventListener('change', async e => {
+      const file = e.target.files[0];
+      if (!file) return;
 
-    // Preview inmediato
-    const reader = new FileReader();
-    reader.onload = e => {
-      if (avatar) avatar.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+      // Preview inmediato
+      const reader = new FileReader();
+      reader.onload = e => {
+        if (avatar) avatar.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
 
-    // Luego subimos al servidor
-    reader.onloadend = async () => {
-      try {
-        const formData = new FormData();
-        formData.append('fotoPerfil', file);
+      // Luego subimos al servidor
+      reader.onloadend = async () => {
+        try {
+          const formData = new FormData();
+          formData.append('fotoPerfil', file);
 
-        const authToken = localStorage.getItem('authToken');
-        const res = await fetch('/api/usuario/foto-perfil', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          },
-          body: formData
-        });
-
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-
-        const data = await res.json();
-
-        if (data.avatar_url && avatar) {
-          avatar.src = data.avatar_url;
-
-          // Actualizar localStorage
-          const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-          user.imagen_perfil = data.avatar_url.replace('/uploads/', '');
-          localStorage.setItem('currentUser', JSON.stringify(user));
-        }
-      } catch (error) {
-        console.error('❌ Error al subir la foto de perfil:', error);
-        alert('No se pudo subir la foto de perfil. Intente nuevamente.');
-      }
-    };
-  });
-}
-
-
-  
-
-  const searchForm = document.getElementById('searchForm');
-  const searchInput = document.getElementById('searchInput');
-  const resultsDiv = document.getElementById('searchResults');
-
-  if (searchForm && searchInput && resultsDiv) {
-    searchForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      const query = searchInput.value.trim();
-      
-      if (query.length < 2) {
-        resultsDiv.innerHTML = `<div class="alert alert-warning">Ingresa al menos 2 caracteres.</div>`;
-        return;
-      }
-      
-      resultsDiv.innerHTML = `<div class="text-center">Buscando...</div>`;
-      try {
-        const res = await fetch(`/api/users/search?q=${encodeURIComponent(query)}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (res.status === 401 || res.status === 403) return logout();
-
-        const users = await res.json();
-        resultsDiv.innerHTML = '';
-        if (!users.length) {
-          resultsDiv.innerHTML = `<div class="alert alert-info">No se encontraron usuarios.</div>`;
-          return;
-        }
-
-    //     users.forEach(user => {
-    //       const avatarId = (user.id % 70) + 1; // Garantiza ID entre 1 y 70
-
-    //       const div = document.createElement('div');
-    //       div.className = 'list-group-item d-flex justify-content-between align-items-center';
-    //       div.innerHTML = `
-    //         <div class="d-flex align-items-center">
-    //           <img src="https://i.pravatar.cc/30?img=${avatarId}" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-    //           <span>${user.nombre} ${user.apellido} (${user.email})</span>
-    //         </div>
-    //           <div class="d-flex gap-2">
-    //   <button class="btn btn-primary btn-sm send-friend-request-btn" data-user-id="${user.id}">Seguir</button>
-    //   <a href="/perfil/${user.id}" class="btn btn-outline-secondary btn-sm">Ver Perfil</a>
-    // </div>
-    //       `;
-    //       resultsDiv.appendChild(div);
-    //     });
-
-
-    users.forEach(user => {
-      // Usa imagen real si tiene, si no, usa imagen por defecto
-      const avatarUrl = user.imagen_perfil 
-        ? `/uploads/${user.imagen_perfil}` 
-        : '/uploads/default-avatar.png';
-    
-      const div = document.createElement('div');
-      div.className = 'list-group-item d-flex justify-content-between align-items-center';
-      div.innerHTML = `
-        <div class="d-flex align-items-center">
-          <img src="${avatarUrl}" class="rounded-circle me-2" style="width: 30px; height: 30px;" alt="Avatar">
-          <span>${user.nombre} ${user.apellido} (${user.email})</span>
-        </div>
-        <div class="d-flex gap-2">
-          <button class="btn btn-primary btn-sm send-friend-request-btn" data-user-id="${user.id}">Seguir</button>
-         
-        </div>
-      `;
-      resultsDiv.appendChild(div);
-    });
-    
-
-
-        document.querySelectorAll('.send-friend-request-btn').forEach(btn => {
-          btn.addEventListener('click', async e => {
-            const id = e.target.dataset.userId;
-            await sendFriendRequest(id, e.target);
+          const authToken = localStorage.getItem('authToken');
+          const res = await fetch('/api/usuario/foto-perfil', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${authToken}`
+            },
+            body: formData
           });
-        });
 
-      } catch (err) {
-        console.error('Error en la búsqueda:', err);
-        resultsDiv.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
-      }
+          if (!res.ok) throw new Error(`Error ${res.status}`);
+
+          const data = await res.json();
+
+          if (data.avatar_url && avatar) {
+            avatar.src = data.avatar_url;
+
+            // Actualizar localStorage
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            user.imagen_perfil = data.avatar_url.replace('/uploads/', '');
+            localStorage.setItem('currentUser', JSON.stringify(user));
+          }
+        } catch (error) {
+          console.error('❌ Error al subir la foto de perfil:', error);
+          alert('No se pudo subir la foto de perfil. Intente nuevamente.');
+        }
+      };
     });
   }
 
 
 
+
+  // const searchForm = document.getElementById('searchForm');
+  // const searchInput = document.getElementById('searchInput');
+  // const resultsDiv = document.getElementById('searchResults');
+
+  // if (searchForm && searchInput && resultsDiv) {
+  //   searchForm.addEventListener('submit', async e => {
+  //     e.preventDefault();
+  //     const query = searchInput.value.trim();
+
+  //     if (query.length < 2) {
+  //       resultsDiv.innerHTML = `<div class="alert alert-warning">Ingresa al menos 2 caracteres.</div>`;
+  //       return;
+  //     }
+
+  //     resultsDiv.innerHTML = `<div class="text-center">Buscando...</div>`;
+  //     try {
+  //       const res = await fetch(`/api/users/search?q=${encodeURIComponent(query)}`, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Authorization': `Bearer ${authToken}`,
+  //           'Content-Type': 'application/json'
+  //         }
+  //       });
+
+  //       if (res.status === 401 || res.status === 403) return logout();
+
+  //       const users = await res.json();
+  //       resultsDiv.innerHTML = '';
+  //       if (!users.length) {
+  //         resultsDiv.innerHTML = `<div class="alert alert-info">No se encontraron usuarios.</div>`;
+  //         return;
+  //       }
+
+  //       users.forEach(user => {
+  //         // Usa imagen real si tiene, si no, usa imagen por defecto
+  //         const avatarUrl = user.imagen_perfil
+  //           ? `/uploads/${user.imagen_perfil}`
+  //           : '/uploads/default-avatar.png';
+
+  //         const div = document.createElement('div');
+  //         div.className = 'list-group-item d-flex justify-content-between align-items-center';
+  //         div.innerHTML = `
+  //       <div class="d-flex align-items-center">
+  //         <img src="${avatarUrl}" class="rounded-circle me-2" style="width: 30px; height: 30px;" alt="Avatar">
+  //         <span>${user.nombre} ${user.apellido} (${user.email})</span>
+  //       </div>
+  //       <div class="d-flex gap-2">
+  //         <button class="btn btn-primary btn-sm send-friend-request-btn" data-user-id="${user.id}">Seguir</button>
+         
+  //       </div>
+  //     `;
+  //         resultsDiv.appendChild(div);
+  //       });
+
+
+
+  //       document.querySelectorAll('.send-friend-request-btn').forEach(btn => {
+  //         btn.addEventListener('click', async e => {
+  //           const id = e.target.dataset.userId;
+  //           await sendFriendRequest(id, e.target);
+  //         });
+  //       });
+
+  //     } catch (err) {
+  //       console.error('Error en la búsqueda:', err);
+  //       resultsDiv.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
+  //     }
+  //   });
+  // }
+
+
+
   // crearFormularioPublicacion();
-  if(typeof cargarAlbumesCompartidos === 'function') {
+  if (typeof cargarAlbumesCompartidos === 'function') {
     cargarAlbumesCompartidos();
   }
   if (typeof cargarPublicaciones === 'function') {
@@ -574,4 +555,4 @@ if (avatarInput) {
 });
 
 
- // <a href="/perfil/${user.id}" class="btn btn-outline-secondary btn-sm">Ver Perfil</a>
+// <a href="/perfil/${user.id}" class="btn btn-outline-secondary btn-sm">Ver Perfil</a>
