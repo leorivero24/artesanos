@@ -240,7 +240,7 @@ async function cargarPublicaciones() {
     }
 
     publicaciones.forEach(pub => {
-      const avatarUrl = pub.imagen_perfil ? `/uploads/${pub.imagen_perfil}` : '/uploads/default-avatar.png';
+      const avatarUrl = pub.imagen_perfil ? `${pub.imagen_perfil}` : '/uploads/default-avatar.png';
 
       // Verificar si la publicación es propia
       const esPropiaPublicacion = pub.usuario_id === usuarioActual.id;

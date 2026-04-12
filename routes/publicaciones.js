@@ -16,6 +16,19 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+
+// const { CloudinaryStorage } = require('multer-storage-cloudinary');
+// const cloudinary = require('../cloudinary');
+
+// const storage = new CloudinaryStorage({
+//   cloudinary,
+//   params: {
+//     folder: 'publicaciones',
+//     allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
+//   }
+// });
+
+
 const storageAlbum = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'public/uploads/albumes');
@@ -110,6 +123,8 @@ router.post('/publicaciones', authMiddleware, upload.single('imagen'), async (re
   const { descripcion, tags, visibilidad, usuarios_compartidos } = req.body;
   const imagenUrl = '/uploads/' + req.file.filename;
 
+  
+
   const con = pool.promise();
 
   try {
@@ -159,11 +174,15 @@ router.post('/publicaciones', authMiddleware, upload.single('imagen'), async (re
       imagen_url: imagenUrl
     });
 
+    
+
   } catch (err) {
     console.error('❌ Error al crear publicación:', err);
     res.status(500).json({ mensaje: 'Error al guardar la publicación.' });
   }
 });
+
+
 
 //OBTENER PUBLICACIONES de todos los usuarios
 router.get('/api/publicaciones', authMiddleware, async (req, res) => {

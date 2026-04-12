@@ -1,7 +1,15 @@
+
+
+
+
+
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+
+// Importar el middleware de autenticación
+const authMiddleware = require('./middlewares/authMiddleware');
 
 const app = express();
 const server = require('http').createServer(app);
@@ -12,9 +20,13 @@ const { configurarSockets } = require('./sockets/sockets');
 configurarSockets(io);
 const publicacionesRoutes = require('./routes/publicaciones');
 
+
+
 // Middlewares para parsear el cuerpo de las peticiones
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+
 
 app.get('/mis-albumes', (req, res) => {
     res.render('mis-albumes'); // deja que JS verifique token
@@ -38,10 +50,10 @@ app.get('/perfil', (req, res) => {
   
 
 // Este orden es importante
-app.use(publicacionesRoutes); 
-app.use('/api', publicacionesRoutes);
+// app.use(publicacionesRoutes); 
+// app.use('/api', publicacionesRoutes);
 
-const albumesRoutes = require('./routes/publicaciones');
+// const albumesRoutes = require('./routes/publicaciones');
 app.use('/', publicacionesRoutes); 
 
 
@@ -82,8 +94,7 @@ app.use('/', authRoutes);
 const userRoutes = require('./routes/users');
 app.use('/', userRoutes); 
 
-// Importar el middleware de autenticación
-const authMiddleware = require('./middlewares/authMiddleware');
+
 
 // ✨ CAMBIO CLAVE AQUÍ: La ruta GET /dashboard YA NO usa authMiddleware directamente.
 // La protección inicial se hace ahora desde el JavaScript de dashboard.pug

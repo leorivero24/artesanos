@@ -197,6 +197,15 @@ unded-circle {
   
 }
 
+#sidebarUserAvatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover; /* clave: recorta sin deformar */
+  display: block;
+   
+}
+
 #sidebarUserName {
   display: flex;
   align-items: center;
